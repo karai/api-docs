@@ -1,0 +1,319 @@
+<!-- HTML for static distribution bundle build -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Swagger UI</title>
+    <link rel="stylesheet" type="text/css" href="./swagger-ui.css" >
+    <style>
+      html
+      {
+        box-sizing: border-box;
+        overflow: -moz-scrollbars-vertical;
+        overflow-y: scroll;
+      }
+
+      *,
+      *:before,
+      *:after
+      {
+        box-sizing: inherit;
+
+      body
+      {
+        margin:0;
+        background: #fafafa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="swagger-ui"></div>
+
+    <script src="./swagger-ui-bundle.js"> </script>
+    <script src="./swagger-ui-standalone-preset.js"> </script>
+    <script>
+    window.onload = function() {
+      const spec = {
+          "openapi": "3.0.1",
+          "info": {
+            "title": "go-karai",
+            "description": "<img src=\"./karai.png\" style=\"display: block; margin-left: auto; margin-right: auto; width: 70%;\">\n\n# Intro\n\nThis website documents the API methods available for the `go-karai` program.\n\nThe default base API url is [127.0.0.1:4200/api/v1](http://127.0.0.1:4200/api/v1).\n\nWhen using the docs, be aware that you can click the 'Model' tab to get a description of all available parameters, their types, and an example value.\n\n# Initialization\n\n* Start by launching the `go-karai` program.\n* From a terminal (or via a programming language):\n\n```\n./go-karai -coordinator\n```\n\n* Or if you're on windows:\n\n```\ngo-karai.exe -coordinator\n```\n\n* If you want to see the available configuration options for the `wallet-api`, launch the program with:\n```\n./go-karai -help\n```\n\n# Try it Out\n\nIf you want to test karai out without doing any programming, you can use the 'Try it out' section in swagger.\n\n# API Wrappers\n\nFinally, whilst you may send raw HTTP requests to the API url, you may be interested in an API/RPC wrapper.\n\nThese can be generated for many languages, by using the `Generate Client` option in the top menu.\nBe patient, this can take some time to complete.\n\n# Support\n\nIf you are having issues, please stop by our [discord](http://chat.turtlecoin.lol) and visit the `#dev_karai` channel for assistance.",
+            "version": "1.0.0"
+          },
+          "servers": [
+            {
+              "url": "https://zeus.karai.io/api/v1"
+            },
+            {
+              "url": "http://zeus.karai.io/api/v1"
+            }
+          ],
+          "tags": [
+            {
+              "name": "misc",
+              "description": "Miscellaneous operations such as status check, peer retrieval, version retrieval"
+            },
+            {
+              "name": "transactions",
+              "description": "Operations related to transactions"
+            }
+          ],
+          "paths": {
+            "/": {
+              "get": {
+                "tags": [
+                  "misc"
+                ],
+                "summary": "Can be used to verify a coordinator is online",
+                "responses": {
+                  "200": {
+                    "description": "",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "string",
+                          "example": "Hello go-karai"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "/peer": {
+              "get": {
+                "tags": [
+                  "misc"
+                ],
+                "summary": "Get the p2p peer ID of this coordinator",
+                "responses": {
+                  "200": {
+                    "description": "",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "p2p_peer_ID": {
+                              "type": "string",
+                              "description": "The p2p peer ID of this coordinator",
+                              "example": "b5c8b20811de384b5018280a4471205cc8300a1250fad93532ea2e2f1518206b"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "/version": {
+              "get": {
+                "tags": [
+                  "misc"
+                ],
+                "summary": "Get the version of the software the coordinator is using",
+                "responses": {
+                  "200": {
+                    "description": "",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "karai_version": {
+                              "type": "string",
+                              "description": "The version of the software",
+                              "example": "0.7.1"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "/transactions": {
+              "get": {
+                "tags": [
+                  "transactions"
+                ],
+                "summary": "Retrieve all transactions in the graph",
+                "responses": {
+                  "200": {
+                    "description": "",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "$ref": "#/components/schemas/RootTx"
+                              },
+                              {
+                                "$ref": "#/components/schemas/MilestoneTx"
+                              },
+                              {
+                                "$ref": "#/components/schemas/SubgraphTipTx"
+                              },
+                              {
+                                "$ref": "#/components/schemas/StandardTx"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "/transaction/send": {
+              "post": {
+                "tags": [
+                  "transactions"
+                ],
+                "summary": "Validate and send a transaction",
+                "responses": {
+                  "200": {
+                    "description": "This function has not yet been implemented",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "components": {
+            "schemas": {
+              "RootTx": {
+                "type": "object",
+                "properties": {
+                  "tx_type": {
+                    "type": "number",
+                    "example": 0,
+                    "description": "The type of this transaction. 0, for RootTx."
+                  },
+                  "tx_hash": {
+                    "type": "string",
+                    "example": "1ae3529687d8340213f6ffc2c5a4d2747ff35575eb12841e7bfea60660cd69c1",
+                    "description": "The SHA256 hash of the root transaction's contents."
+                  },
+                  "tx_data": {
+                    "type": "string",
+                    "example": "Karai Transaction Channel - Root",
+                    "description": "This is an arbitrary data field."
+                  }
+                }
+              },
+              "MilestoneTx": {
+                "type": "object",
+                "properties": {
+                  "tx_type": {
+                    "type": "number",
+                    "example": 1,
+                    "description": "The type of this transaction. 1, for MilestoneTx."
+                  },
+                  "tx_hash": {
+                    "type": "string",
+                    "example": "1ae3529687d8340213f6ffc2c5a4d2747ff35575eb12841e7bfea60660cd69c1",
+                    "description": "The SHA256 hash of the milestone transaction's contents."
+                  },
+                  "tx_prev": {
+                    "type": "string",
+                    "example": "1ae3529687d8340213f6ffc2c5a4d2747ff35575eb12841e7bfea60660cd69c1",
+                    "description": "The SHA256 hash of the previous transaction"
+                  },
+                  "tx_data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "SubgraphTipTx": {
+                "type": "object",
+                "properties": {
+                  "tx_type": {
+                    "type": "number",
+                    "example": 2,
+                    "description": "The type of this transaction. 2, for SubgraphTipTx."
+                  },
+                  "tx_hash": {
+                    "type": "string",
+                    "example": "1ae3529687d8340213f6ffc2c5a4d2747ff35575eb12841e7bfea60660cd69c1",
+                    "description": "The SHA256 hash of the subgraph tip transaction's contents."
+                  },
+                  "tx_prev": {
+                    "type": "string",
+                    "example": "1ae3529687d8340213f6ffc2c5a4d2747ff35575eb12841e7bfea60660cd69c1",
+                    "description": "The SHA256 hash of the previous transaction"
+                  },
+                  "tx_data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "StandardTx": {
+                "type": "object",
+                "properties": {
+                  "tx_type": {
+                    "type": "number",
+                    "example": 3,
+                    "description": "The type of this transaction. 3, for StandardTx."
+                  },
+                  "tx_hash": {
+                    "type": "string",
+                    "example": "1ae3529687d8340213f6ffc2c5a4d2747ff35575eb12841e7bfea60660cd69c1",
+                    "description": "The SHA256 hash of the standard transaction's contents."
+                  },
+                  "tx_prev": {
+                    "type": "string",
+                    "example": "1ae3529687d8340213f6ffc2c5a4d2747ff35575eb12841e7bfea60660cd69c1",
+                    "description": "The SHA256 hash of the previous transaction"
+                  },
+                  "tx_data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        };
+
+      // Begin Swagger UI call region
+      const ui = SwaggerUIBundle({
+        spec: spec,
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout"
+      })
+      // End Swagger UI call region
+
+      window.ui = ui
+    }
+  </script>
+  </body>
+</html>
